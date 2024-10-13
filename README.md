@@ -32,7 +32,7 @@ The **Client Proposal Generator Tool** is a web application designed to streamli
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/your-username/client-proposal-generator-tool.git
+    git clone https://github.com/GurkhaTechnology/client-proposal-generator-tool.git
     cd client-proposal-generator-tool
     ```
 
@@ -70,7 +70,7 @@ The **Client Proposal Generator Tool** is a web application designed to streamli
 
     ```
     PORT=5000
-    DATABASE_URL=your-database-url
+    DATABASE_URL=gurkhatechnology
     ```
 
 5. **PDF Generation Setup**
