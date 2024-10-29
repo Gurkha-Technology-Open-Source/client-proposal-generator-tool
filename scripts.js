@@ -1,92 +1,71 @@
-document.getElementById('nextStep').addEventListener('click', function() {
-    const servicesForm = document.getElementById('servicesForm');
-    const selectedServices = Array.from(servicesForm.elements['services'])
-        .filter(service => service.checked)
-        .map(service => service.value);
+function nextStep() {
+    document.getElementById("service-selection").classList.add("d-none");
+    document.getElementById("package-questions").classList.remove("d-none");
 
-    // Show questions based on selected services
-    if (selectedServices.includes('web-development')) {
-        document.getElementById('webDevelopmentQuestions').style.display = 'block';
+    if (document.getElementById("webDev").checked) {
+        document.getElementById("webDevOptions").classList.remove("d-none");
     }
-    if (selectedServices.includes('digital-marketing')) {
-        document.getElementById('digitalMarketingQuestions').style.display = 'block';
+    if (document.getElementById("digitalMarketing").checked) {
+        document.getElementById("digitalMarketingOptions").classList.remove("d-none");
     }
-    if (selectedServices.includes('web-hosting')) {
-        document.getElementById('webHostingQuestions').style.display = 'block';
+    if (document.getElementById("webHosting").checked) {
+        document.getElementById("webHostingOptions").classList.remove("d-none");
     }
+}
 
-    document.getElementById('step1').style.display = 'none';
-    document.getElementById('step2').style.display = 'block';
-});
+function generateProposal() {
+    let proposalText = "Based on your selections, here are the details of the packages you've chosen:\n\n";
 
-document.getElementById('generateProposal').addEventListener('click', function() {
-    let proposal = '<h3>Selected Packages:</h3>';
-    let totalCost = 0;
-
-    // Web Development
-    const webDevPackage = document.getElementById('webDevPackage').value;
+    // Web Development Package
+    const webDevPackage = document.querySelector('input[name="webDevPackage"]:checked');
     if (webDevPackage) {
-        switch(webDevPackage) {
-            case 'starter':
-                proposal += '<p>Web Development: Starter Package - NRs 35,000</p>';
-                totalCost += 35000;
-                break;
-            case 'standard':
-                proposal += '<p>Web Development: Standard Package - NRs 60,000</p>';
-                totalCost += 60000;
-                break;
-            case 'premium':
-                proposal += '<p>Web Development: Premium Package - NRs 85,000</p>';
-                totalCost += 85000;
-                break;
+        proposalText += `Web Development Package: ${webDevPackage.value}\n`;
+        if (webDevPackage.value === "Starter") {
+            proposalText += "Includes up to 5 pages, SEO, and 3 months of support.\n";
+        } else if (webDevPackage.value === "Standard") {
+            proposalText += "Includes up to 10 pages, SEO, and 6 months of support.\n";
+        } else if (webDevPackage.value === "Premium") {
+            proposalText += "Includes up to 25 pages, SEO, and 1 year of support.\n";
         }
     }
 
-    // Digital Marketing
-    const dmPackage = document.getElementById('dmPackage').value;
+    // Digital Marketing Package
+    const dmPackage = document.querySelector('input[name="dmPackage"]:checked');
     if (dmPackage) {
-        switch(dmPackage) {
-            case 'gt1':
-                proposal += '<p>Digital Marketing: GT 1 Package - NRs 30,000</p>';
-                totalCost += 30000;
-                break;
-            case 'gt2':
-                proposal += '<p>Digital Marketing: GT 2 Package - NRs 50,000</p>';
-                totalCost += 50000;
-                break;
-            case 'gt3':
-                proposal += '<p>Digital Marketing: GT 3 Package - NRs 80,000</p>';
-                totalCost += 80000;
-                break;
-            case 'gt4':
-                proposal += '<p>Digital Marketing: GT 4 Package - NRs 100,000</p>';
-                totalCost += 100000;
-                break;
+        proposalText += `\nDigital Marketing Package: ${dmPackage.value}\n`;
+        if (dmPackage.value === "GT 1") {
+            proposalText += "Includes 4 creative designs, USD $53 credit, and reach up to 80K+.\n";
+        } else if (dmPackage.value === "GT 2") {
+            proposalText += "Includes 8 creative designs, USD $88 credit, and reach up to 133K+.\n";
+        } else if (dmPackage.value === "GT 3") {
+            proposalText += "Includes 18 creative designs, USD $176 credit, and reach up to 266K+.\n";
+        } else if (dmPackage.value === "GT 4") {
+            proposalText += "Includes 20 creative designs, no credit, and a custom reach.\n";
         }
     }
 
-    // Web Hosting
-    const hostingPackage = document.getElementById('hostingPackage').value;
+    // Web Hosting Package
+    const hostingPackage = document.querySelector('input[name="hostingPackage"]:checked');
     if (hostingPackage) {
-        switch(hostingPackage) {
-            case 'basic':
-                proposal += '<p>Web Hosting: Basic Package - NRs 5,000/year</p>';
-                totalCost += 5000;
-                break;
-            case 'professional':
-                proposal += '<p>Web Hosting: Professional Package - NRs 8,000/year</p>';
-                totalCost += 8000;
-                break;
-            case 'business':
-                proposal += '<p>Web Hosting: Business Package - NRs 18,000/year</p>';
-                totalCost += 18000;
-                break;
+        proposalText += `\nWeb Hosting Package: ${hostingPackage.value}\n`;
+        if (hostingPackage.value === "Basic") {
+            proposalText += "1GB Disk Space, Unlimited Bandwidth, and 1 Email Account.\n";
+        } else if (hostingPackage.value === "Professional") {
+            proposalText += "5GB Disk Space, Unlimited Bandwidth, and 5 Email Accounts.\n";
+        } else if (hostingPackage.value === "Business") {
+            proposalText += "25GB Disk Space, Unlimited Bandwidth, and 15 Email Accounts.\n";
         }
     }
 
-    proposal += `<h3>Total Estimated Cost: NRs ${totalCost}</h3>`;
+    document.getElementById("package-questions").classList.add("d-none");
+    document.getElementById("proposal").classList.remove("d-none");
+    document.getElementById("proposalContent").innerText = proposalText;
+}
 
-    document.getElementById('step2').style.display = 'none';
-    document.getElementById('step3').style.display = 'block';
-    document.getElementById('proposalDetails').innerHTML = proposal;
-});
+function resetForm() {
+    document.getElementById("serviceForm").reset();
+    document.querySelectorAll(".service-options").forEach(option => option.classList.add("d-none"));
+    document.getElementById("service-selection").classList.remove("d-none");
+    document.getElementById("package-questions").classList.add("d-none");
+    document.getElementById("proposal").classList.add("d-none");
+}

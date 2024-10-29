@@ -9,7 +9,7 @@
 <body>
 <div class="container my-5">
     <h2 class="text-center mb-4">Gurkha Technology Proposal Generator</h2>
-    
+
     <!-- Step 1: Service Selection -->
     <div id="service-selection" class="mb-4">
         <h4>Select the Service(s) Required:</h4>
@@ -30,24 +30,27 @@
         </form>
     </div>
 
-    <!-- Step 2: Package Questions -->
+    <!-- Step 2: Package Questions with Details -->
     <div id="package-questions" class="d-none mb-4">
         <h4>Please Choose a Package for Each Service Selected:</h4>
-        
+
         <!-- Web Development Packages -->
         <div id="webDevOptions" class="service-options d-none">
             <h5>Web Development Packages:</h5>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="webDevPackage" id="starter" value="Starter">
                 <label class="form-check-label" for="starter">Starter - NRs 35,000</label>
+                <small class="form-text text-muted">Includes up to 5 pages, SEO, and 3 months of support.</small>
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="webDevPackage" id="standard" value="Standard">
                 <label class="form-check-label" for="standard">Standard - NRs 60,000</label>
+                <small class="form-text text-muted">Includes up to 10 pages, SEO, and 6 months of support.</small>
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="webDevPackage" id="premium" value="Premium">
                 <label class="form-check-label" for="premium">Premium - NRs 85,000</label>
+                <small class="form-text text-muted">Includes up to 25 pages, SEO, and 1 year of support.</small>
             </div>
         </div>
 
@@ -57,18 +60,22 @@
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="dmPackage" id="gt1" value="GT 1">
                 <label class="form-check-label" for="gt1">GT 1 - NRs 30,000</label>
+                <small class="form-text text-muted">Includes 4 creative designs, USD $53 credit, and reach up to 80K+.</small>
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="dmPackage" id="gt2" value="GT 2">
                 <label class="form-check-label" for="gt2">GT 2 - NRs 50,000</label>
+                <small class="form-text text-muted">Includes 8 creative designs, USD $88 credit, and reach up to 133K+.</small>
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="dmPackage" id="gt3" value="GT 3">
                 <label class="form-check-label" for="gt3">GT 3 - NRs 75,000</label>
+                <small class="form-text text-muted">Includes 18 creative designs, USD $176 credit, and reach up to 266K+.</small>
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="dmPackage" id="gt4" value="GT 4">
                 <label class="form-check-label" for="gt4">GT 4 - NRs 100,000</label>
+                <small class="form-text text-muted">Includes 20 creative designs, no credit, and a custom reach.</small>
             </div>
         </div>
 
@@ -78,14 +85,17 @@
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="hostingPackage" id="basic" value="Basic">
                 <label class="form-check-label" for="basic">Basic - NRs 5,000/Year</label>
+                <small class="form-text text-muted">1GB Disk Space, Unlimited Bandwidth, and 1 Email Account.</small>
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="hostingPackage" id="professional" value="Professional">
                 <label class="form-check-label" for="professional">Professional - NRs 8,000/Year</label>
+                <small class="form-text text-muted">5GB Disk Space, Unlimited Bandwidth, and 5 Email Accounts.</small>
             </div>
             <div class="form-check">
                 <input type="radio" class="form-check-input" name="hostingPackage" id="business" value="Business">
                 <label class="form-check-label" for="business">Business - NRs 18,000/Year</label>
+                <small class="form-text text-muted">25GB Disk Space, Unlimited Bandwidth, and 15 Email Accounts.</small>
             </div>
         </div>
 
@@ -100,79 +110,6 @@
     </div>
 </div>
 
-<script>
-    function nextStep() {
-        document.getElementById("service-selection").classList.add("d-none");
-        document.getElementById("package-questions").classList.remove("d-none");
-
-        if (document.getElementById("webDev").checked) {
-            document.getElementById("webDevOptions").classList.remove("d-none");
-        }
-        if (document.getElementById("digitalMarketing").checked) {
-            document.getElementById("digitalMarketingOptions").classList.remove("d-none");
-        }
-        if (document.getElementById("webHosting").checked) {
-            document.getElementById("webHostingOptions").classList.remove("d-none");
-        }
-    }
-
-    function generateProposal() {
-        let proposalText = "Based on your selections, here are the details of the packages you've chosen:\n\n";
-
-        // Web Development Package
-        const webDevPackage = document.querySelector('input[name="webDevPackage"]:checked');
-        if (webDevPackage) {
-            proposalText += `Web Development Package: ${webDevPackage.value}\n`;
-            if (webDevPackage.value === "Starter") {
-                proposalText += "Includes up to 5 pages, SEO, and 3 months of support.\n";
-            } else if (webDevPackage.value === "Standard") {
-                proposalText += "Includes up to 10 pages, SEO, and 6 months of support.\n";
-            } else if (webDevPackage.value === "Premium") {
-                proposalText += "Includes up to 25 pages, SEO, and 1 year of support.\n";
-            }
-        }
-
-        // Digital Marketing Package
-        const dmPackage = document.querySelector('input[name="dmPackage"]:checked');
-        if (dmPackage) {
-            proposalText += `\nDigital Marketing Package: ${dmPackage.value}\n`;
-            if (dmPackage.value === "GT 1") {
-                proposalText += "Includes 4 creative designs, USD $53 credit, and reach up to 80K+.\n";
-            } else if (dmPackage.value === "GT 2") {
-                proposalText += "Includes 8 creative designs, USD $88 credit, and reach up to 133K+.\n";
-            } else if (dmPackage.value === "GT 3") {
-                proposalText += "Includes 18 creative designs, USD $176 credit, and reach up to 266K+.\n";
-            } else if (dmPackage.value === "GT 4") {
-                proposalText += "Includes 20 creative designs, no credit, and a custom reach.\n";
-            }
-        }
-
-        // Web Hosting Package
-        const hostingPackage = document.querySelector('input[name="hostingPackage"]:checked');
-        if (hostingPackage) {
-            proposalText += `\nWeb Hosting Package: ${hostingPackage.value}\n`;
-            if (hostingPackage.value === "Basic") {
-                proposalText += "1GB Disk Space, Unlimited Bandwidth, and 1 Email Account.\n";
-            } else if (hostingPackage.value === "Professional") {
-                proposalText += "5GB Disk Space, Unlimited Bandwidth, and 5 Email Accounts.\n";
-            } else if (hostingPackage.value === "Business") {
-                proposalText += "25GB Disk Space, Unlimited Bandwidth, and 15 Email Accounts.\n";
-            }
-        }
-
-        document.getElementById("package-questions").classList.add("d-none");
-        document.getElementById("proposal").classList.remove("d-none");
-        document.getElementById("proposalContent").innerText = proposalText;
-    }
-
-    function resetForm() {
-        document.getElementById("serviceForm").reset();
-        document.querySelectorAll(".service-options").forEach(option => option.classList.add("d-none"));
-        document.getElementById("service-selection").classList.remove("d-none");
-        document.getElementById("package-questions").classList.add("d-none");
-        document.getElementById("proposal").classList.add("d-none");
-    }
-</script>
-
+<script src="scripts.js"></script>
 </body>
 </html>
