@@ -17,14 +17,17 @@
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="webDev" name="service" value="Web Development">
                 <label class="form-check-label" for="webDev">Web Development</label>
+                <small class="form-text text-muted">Builds responsive, SEO-friendly websites tailored to your business needs.</small>
             </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="digitalMarketing" name="service" value="Digital Marketing">
                 <label class="form-check-label" for="digitalMarketing">Digital Marketing</label>
+                <small class="form-text text-muted">Boosts your online presence with strategic content, ad campaigns, and social media engagement.</small>
             </div>
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="webHosting" name="service" value="Web Hosting">
                 <label class="form-check-label" for="webHosting">Web Hosting</label>
+                <small class="form-text text-muted">Reliable and secure hosting solutions with ample storage, bandwidth, and email accounts.</small>
             </div>
             <button type="button" class="btn btn-primary mt-3" onclick="nextStep()">Next</button>
         </form>
@@ -102,14 +105,16 @@
         <button type="button" class="btn btn-success mt-3" onclick="generateProposal()">Generate Proposal</button>
     </div>
 
-    <!-- Step 3: Display Proposal -->
+    <!-- Step 3: Display Proposal with PDF Download Button -->
     <div id="proposal" class="d-none mb-4">
         <h4 class="text-center">Your Custom Proposal</h4>
         <p id="proposalContent"></p>
         <button type="button" class="btn btn-secondary mt-3" onclick="resetForm()">Start Over</button>
+        <button type="button" class="btn btn-primary mt-3" onclick="downloadPDF()">Download PDF</button>
     </div>
 </div>
 
 <script src="scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </body>
 </html>

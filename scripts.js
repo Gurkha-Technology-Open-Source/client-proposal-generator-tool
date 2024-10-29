@@ -69,3 +69,10 @@ function resetForm() {
     document.getElementById("package-questions").classList.add("d-none");
     document.getElementById("proposal").classList.add("d-none");
 }
+
+function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.text(document.getElementById("proposalContent").innerText, 10, 10);
+    doc.save("proposal.pdf");
+}
