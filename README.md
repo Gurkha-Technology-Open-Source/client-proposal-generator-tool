@@ -18,11 +18,8 @@ The **Client Proposal Generator Tool** is a web application designed to streamli
 
 ## Tech Stack
 
-- **Frontend**: HTML, CSS, JavaScript (React.js)
-- **Backend**: Node.js, Express.js
-- **PDF Generation**: PDFKit or jsPDF for creating downloadable proposals
-- **Database**: MongoDB or Firebase for data storage
-- **Hosting**: GitHub Pages or Heroku
+- **Frontend**: HTML, CSS, JavaScript
+- **PDF Generation**: jsPDF for creating downloadable proposals
 - **Version Control**: GitHub for code management
 
 ---
@@ -36,59 +33,19 @@ The **Client Proposal Generator Tool** is a web application designed to streamli
     cd client-proposal-generator-tool
     ```
 
-2. **Install Dependencies**
+2. **Open the Application**
 
-    For Node.js and backend dependencies:
-
-    ```bash
-    npm install
-    ```
-
-    For frontend dependencies:
-
-    ```bash
-    npm install --prefix client
-    ```
-
-3. **Running the App**
-
-    - To start the backend server:
-
-    ```bash
-    npm start
-    ```
-
-    - To start the frontend (React.js app), navigate to the `client` directory and run:
-
-    ```bash
-    npm start --prefix client
-    ```
-
-4. **Environment Variables**
-
-    Create a `.env` file and add the following environment variables:
-
-    ```
-    PORT=5000
-    DATABASE_URL=gurkhatechnology
-    ```
-
-5. **PDF Generation Setup**
-
-    To generate PDF files, install **PDFKit** or **jsPDF**:
-
-    ```bash
-    npm install pdfkit
-    ```
+    Open the `index.html` file in your web browser.
 
 ---
 
 ## Usage
 
-1. Navigate to the form page where clients input their project details (budget, scope, goals, etc.).
-2. Click "Generate Proposal" after filling out the form.
-3. The tool generates a professional, branded proposal using your agency’s template.
-4. Clients can download the proposal as a PDF.
+1. Open the `index.html` file in your web browser.
+2. Select the services you require.
+3. Choose a package for each selected service.
+4. Click "Generate Proposal".
+5. Download the generated proposal as a PDF.
 
 ---
 
@@ -96,20 +53,9 @@ The **Client Proposal Generator Tool** is a web application designed to streamli
 
 ```bash
 client-proposal-generator-tool/
-├── client/                   # Frontend (React.js)
-│   ├── src/
-│   ├── public/
-│   └── package.json
-│
-├── server/                   # Backend (Node.js, Express)
-│   ├── routes/
-│   ├── models/
-│   ├── controllers/
-│   └── server.js
-│
-├── .env                      # Environment variables
+├── index.html                # Main HTML file
+├── scripts.js                # JavaScript file
 ├── README.md                 # Project overview and instructions
-├── package.json              # Backend dependencies
 └── .gitignore                # Files to be ignored by Git
 Contributing
 We welcome contributions! If you'd like to contribute:
