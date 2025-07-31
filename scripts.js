@@ -21,11 +21,11 @@ function generateProposal() {
     if (webDevPackage) {
         proposalText += `Web Development Package: ${webDevPackage.value}\n`;
         if (webDevPackage.value === "Starter") {
-            proposalText += "Includes up to 5 pages, SEO, and 3 months of support.\n";
+            proposalText += "Our Starter package is perfect for small businesses and startups. It includes a fully responsive design with up to 5 custom-designed pages, basic on-page SEO to improve search engine visibility, and 3 months of dedicated technical support.\n";
         } else if (webDevPackage.value === "Standard") {
-            proposalText += "Includes up to 10 pages, SEO, and 6 months of support.\n";
+            proposalText += "The Standard package is designed for growing businesses. It includes everything in the Starter package, expanded to 10 pages, with advanced SEO features, and 6 months of comprehensive support to ensure your website runs smoothly.\n";
         } else if (webDevPackage.value === "Premium") {
-            proposalText += "Includes up to 25 pages, SEO, and 1 year of support.\n";
+            proposalText += "Our Premium package offers a complete solution for established businesses. It includes up to 25 pages, advanced SEO, e-commerce functionality, and a full year of priority support, ensuring your online presence is robust and scalable.\n";
         }
     }
 
@@ -34,13 +34,13 @@ function generateProposal() {
     if (dmPackage) {
         proposalText += `\nDigital Marketing Package: ${dmPackage.value}\n`;
         if (dmPackage.value === "GT 1") {
-            proposalText += "Includes 4 creative designs, USD $53 credit, and reach up to 80K+.\n";
+            proposalText += "The GT 1 package is ideal for businesses starting with digital marketing. It includes 4 creative designs for social media, a USD $53 advertising credit to kickstart your campaigns, and an estimated reach of over 80,000 potential customers.\n";
         } else if (dmPackage.value === "GT 2") {
-            proposalText += "Includes 8 creative designs, USD $88 credit, and reach up to 133K+.\n";
+            proposalText += "The GT 2 package is designed for businesses looking to expand their digital footprint. It includes 8 creative designs, a USD $88 advertising credit, and an estimated reach of over 133,000, helping you connect with a larger audience.\n";
         } else if (dmPackage.value === "GT 3") {
-            proposalText += "Includes 18 creative designs, USD $176 credit, and reach up to 266K+.\n";
+            proposalText += "Our GT 3 package is tailored for aggressive growth. It includes 18 creative designs, a generous USD $176 advertising credit, and an impressive reach of over 266,000, maximizing your market penetration.\n";
         } else if (dmPackage.value === "GT 4") {
-            proposalText += "Includes 20 creative designs, no credit, and a custom reach.\n";
+            proposalText += "The GT 4 package offers a fully customized digital marketing strategy. It includes 20 creative designs and a tailored reach based on your specific business goals, without a fixed advertising credit, providing maximum flexibility.\n";
         }
     }
 
@@ -49,11 +49,11 @@ function generateProposal() {
     if (hostingPackage) {
         proposalText += `\nWeb Hosting Package: ${hostingPackage.value}\n`;
         if (hostingPackage.value === "Basic") {
-            proposalText += "1GB Disk Space, Unlimited Bandwidth, and 1 Email Account.\n";
+            proposalText += "Our Basic hosting plan is perfect for personal websites and small projects. It includes 1GB of disk space, unmetered bandwidth, and one professional email account, providing a reliable and affordable hosting solution.\n";
         } else if (hostingPackage.value === "Professional") {
-            proposalText += "5GB Disk Space, Unlimited Bandwidth, and 5 Email Accounts.\n";
+            proposalText += "The Professional hosting plan is ideal for small businesses and freelancers. It offers 5GB of disk space, unmetered bandwidth, and 5 professional email accounts, giving you more room to grow.\n";
         } else if (hostingPackage.value === "Business") {
-            proposalText += "25GB Disk Space, Unlimited Bandwidth, and 15 Email Accounts.\n";
+            proposalText += "Our Business hosting plan is designed for high-traffic websites and e-commerce stores. It comes with 25GB of disk space, unmetered bandwidth, and 15 professional email accounts, ensuring top performance and reliability.\n";
         }
     }
 
