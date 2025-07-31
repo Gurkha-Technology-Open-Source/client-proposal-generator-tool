@@ -33,36 +33,7 @@
       "id": "digitalMarketing",
       "name": "Digital Marketing",
       "description": "Boosts your online presence with strategic content, ad campaigns, and social media engagement.",
-      "packages": [
-        {
-          "id": "gt1",
-          "name": "GT 1",
-          "price": "NRs 30,000",
-          "features": "Includes 4 creative designs, USD $53 credit, and reach up to 80K+.",
-          "fullDescription": "The GT 1 package is ideal for businesses starting with digital marketing. It includes 4 creative designs for social media, a USD $53 advertising credit to kickstart your campaigns, and an estimated reach of over 80,000 potential customers."
-        },
-        {
-          "id": "gt2",
-          "name": "GT 2",
-          "price": "NRs 50,000",
-          "features": "Includes 8 creative designs, USD $88 credit, and reach up to 133K+.",
-          "fullDescription": "The GT 2 package is designed for businesses looking to expand their digital footprint. It includes 8 creative designs, a USD $88 advertising credit, and an estimated reach of over 133,000, helping you connect with a larger audience."
-        },
-        {
-          "id": "gt3",
-          "name": "GT 3",
-          "price": "NRs 75,000",
-          "features": "Includes 18 creative designs, USD $176 credit, and reach up to 266K+.",
-          "fullDescription": "Our GT 3 package is tailored for aggressive growth. It includes 18 creative designs, a generous USD $176 advertising credit, and an impressive reach of over 266,000, maximizing your market penetration."
-        },
-        {
-          "id": "gt4",
-          "name": "GT 4",
-          "price": "NRs 100,000",
-          "features": "Includes 20 creative designs, no credit, and a custom reach.",
-          "fullDescription": "The GT 4 package offers a fully customized digital marketing strategy. It includes 20 creative designs and a tailored reach based on your specific business goals, without a fixed advertising credit, providing maximum flexibility."
-        }
-      ]
+      "packages": []
     },
     {
       "id": "webHosting",

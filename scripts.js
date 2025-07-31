@@ -1,21 +1,62 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("data.json")
-        .then(response => response.json())
-        .then(data => {
-            window.proposalData = data;
-            const serviceForm = document.getElementById("serviceForm");
-            data.services.forEach(service => {
-                const serviceDiv = document.createElement("div");
-                serviceDiv.className = "form-check";
-                serviceDiv.innerHTML = `
-                    <input type="checkbox" class="form-check-input" id="${service.id}" name="service" value="${service.name}">
-                    <label class="form-check-label" for="${service.id}">${service.name}</label>
-                    <small class="form-text text-muted">${service.description}</small>
-                `;
-                serviceForm.appendChild(serviceDiv);
-            });
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4YHLJ-QG-5mniI5lWB9KsfvItj2zngZwIQa0Lb-FD4O0sYCRUTb_LcOZPxFYY_w5_rASmd_TaXipw/pub?gid=0&single=true&output=csv";
+    const cacheBustedUrl = `${csvUrl}&_=${new Date().getTime()}`;
+
+    Promise.all([
+        fetch("data.json").then(response => response.json()),
+        fetch(cacheBustedUrl).then(response => response.text())
+    ]).then(([localData, csvData]) => {
+        window.proposalData = localData;
+        const digitalMarketingService = window.proposalData.services.find(s => s.id === "digitalMarketing");
+        if (digitalMarketingService) {
+            digitalMarketingService.packages = parseCsv(csvData);
+        }
+
+        const serviceForm = document.getElementById("serviceForm");
+        window.proposalData.services.forEach(service => {
+            const serviceDiv = document.createElement("div");
+            serviceDiv.className = "form-check";
+            serviceDiv.innerHTML = `
+                <input type="checkbox" class="form-check-input" id="${service.id}" name="service" value="${service.name}">
+                <label class="form-check-label" for="${service.id}">${service.name}</label>
+                <small class="form-text text-muted">${service.description}</small>
+            `;
+            serviceForm.appendChild(serviceDiv);
         });
+    });
 });
+
+function parseCsv(csv) {
+    const lines = csv.split('\n');
+    const headers = lines[0].split(',').map(h => h.trim());
+    const packages = [];
+
+    for (let i = 1; i < headers.length; i++) {
+        const pkg = {
+            id: headers[i].replace(/\s+/g, '-').toLowerCase(),
+            name: headers[i],
+            price: "",
+            features: "",
+            fullDescription: ""
+        };
+        let description = "";
+        for (let j = 1; j < lines.length; j++) {
+            const row = lines[j].split(',');
+            const featureName = row[0].trim();
+            const featureValue = row[i] ? row[i].trim() : "";
+
+            if (featureName.toLowerCase() === 'total cost') {
+                pkg.price = `NRs ${featureValue}`;
+            } else {
+                description += `${featureName}: ${featureValue}\n`;
+            }
+        }
+        pkg.fullDescription = description;
+        pkg.features = description.split('\n').slice(0, 2).join(', ');
+        packages.push(pkg);
+    }
+    return packages;
+}
 
 function updateProgressBar(step) {
     const progressBar = document.querySelector(".progress-bar");
@@ -103,3 +144,4 @@ function downloadPDF() {
     doc.text(document.getElementById("proposalContent").innerText, 10, 10);
     doc.save("proposal.pdf");
 }
+
