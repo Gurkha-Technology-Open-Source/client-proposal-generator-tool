@@ -1,0 +1,60 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    max-width: 800px;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.progress-bar {
+    height: 10px;
+    border-radius: 5px;
+}
+
+.form-check-label {
+    font-weight: 500;
+}
+
+.form-text {
+    font-size: 0.9rem;
+}
+
+#proposal {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
