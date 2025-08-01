@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             serviceForm.appendChild(serviceDiv);
         });
+        document.getElementById("service-preloader").classList.add("d-none");
+        serviceForm.classList.remove("d-none");
+        document.getElementById("nextStepButton").classList.remove("d-none");
     });
 });
 

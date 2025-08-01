@@ -25,10 +25,16 @@
     <div id="service-selection" class="card">
         <div class="card-header">Select Services</div>
         <div class="card-body">
-            <form id="serviceForm">
+            <div id="service-preloader" class="text-center my-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p class="mt-2">Loading services...</p>
+            </div>
+            <form id="serviceForm" class="d-none">
                 <!-- Services will be dynamically loaded here -->
             </form>
-            <button type="button" class="btn btn-primary mt-4 float-right" onclick="nextStep()">Next</button>
+            <button type="button" class="btn btn-primary mt-4 float-right d-none" id="nextStepButton" onclick="nextStep()">Next</button>
         </div>
     </div>
 
