@@ -51,7 +51,7 @@ function parseCsv(csv) {
     const packages = [];
 
     // Start parsing data from the third line (index 2)
-    for (let i = 2; i < headers.length; i++) { // Iterate through package columns
+    for (let i = 1; i < headers.length; i++) { // Iterate through package columns
         const pkg = {
             id: headers[i].replace(/\s+/g, '-').toLowerCase(),
             name: headers[i],
@@ -63,15 +63,7 @@ function parseCsv(csv) {
 
         for (let j = 2; j < lines.length; j++) { // Iterate through data rows
             const rowLine = lines[j];
-            const rowValues = [];
-            csvSplitRegex.lastIndex = 0; // Reset regex lastIndex for each new line
-            while ((match = csvSplitRegex.exec(rowLine)) !== null) {
-                if (match[1] !== undefined) {
-                    rowValues.push(match[1].replace(/""/g, '"').trim());
-                } else if (match[2] !== undefined) {
-                    rowValues.push(match[2].trim());
-                }
-            }
+            const rowValues = rowLine.split(',').map(val => val.trim()); // Simplified parsing for diagnosis
 
             const featureName = rowValues[0] ? rowValues[0].trim() : "";
             const featureValue = rowValues[i] ? rowValues[i].trim() : "";
