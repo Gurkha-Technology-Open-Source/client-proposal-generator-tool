@@ -167,7 +167,7 @@ function generateProposal() {
         }
     });
 
-    document.getElementById("proposalContent").innerText = proposalText;
+    document.getElementById("proposalPreview").innerText = proposalText;
 }
 
 function resetForm() {
