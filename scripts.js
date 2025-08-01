@@ -105,10 +105,12 @@ function nextStep() {
     packageOptionsContainer.innerHTML = "";
 
     const selectedServices = Array.from(document.querySelectorAll('input[name="service"]:checked')).map(cb => cb.id);
+    console.log("Selected Services:", selectedServices); // Debugging line
 
     selectedServices.forEach(serviceId => {
         const service = window.proposalData.services.find(s => s.id === serviceId);
         if (service) {
+            console.log("Service found:", service.name, "Packages:", service.packages); // Debugging line
             const serviceOptionsDiv = document.createElement("div");
             serviceOptionsDiv.className = "service-options mb-4";
             serviceOptionsDiv.innerHTML = `<h5>${service.name} Packages:</h5>`;
@@ -125,6 +127,8 @@ function nextStep() {
             });
 
             packageOptionsContainer.appendChild(serviceOptionsDiv);
+        } else {
+            console.log("Service not found for ID:", serviceId); // Debugging line
         }
     });
 }
@@ -181,7 +185,7 @@ function resetForm() {
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text(document.getElementById("proposalContent").innerText, 10, 10);
+    doc.text(document.getElementById("proposalPreview").innerText, 10, 10);
     doc.save("proposal.pdf");
 }
 
