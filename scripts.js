@@ -27,11 +27,31 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function parseCsv(csv) {
-    const lines = csv.split('\n');
-    const headers = lines[0].split(',').map(h => h.trim());
+    const lines = csv.split('\n').filter(line => line.trim() !== ''); // Filter out empty lines
+    if (lines.length < 2) {
+        console.error("CSV data is too short to contain headers and data.");
+        return [];
+    }
+
+    // Regex to split CSV lines, handling commas within quotes
+    const csvSplitRegex = /(?:"([^"]*(?:""[^"]*)*)"|([^,]*)),?/g;
+
+    // Parse headers from the second line
+    const headerLine = lines[1];
+    const headers = [];
+    let match;
+    while ((match = csvSplitRegex.exec(headerLine)) !== null) {
+        if (match[1] !== undefined) {
+            headers.push(match[1].replace(/""/g, '"').trim()); // Quoted value
+        } else if (match[2] !== undefined) {
+            headers.push(match[2].trim()); // Unquoted value
+        }
+    }
+
     const packages = [];
 
-    for (let i = 1; i < headers.length; i++) {
+    // Start parsing data from the third line (index 2)
+    for (let i = 2; i < headers.length; i++) { // Iterate through package columns
         const pkg = {
             id: headers[i].replace(/\s+/g, '-').toLowerCase(),
             name: headers[i],
@@ -40,19 +60,30 @@ function parseCsv(csv) {
             fullDescription: ""
         };
         let description = "";
-        for (let j = 1; j < lines.length; j++) {
-            const row = lines[j].split(',');
-            const featureName = row[0].trim();
-            const featureValue = row[i] ? row[i].trim() : "";
+
+        for (let j = 2; j < lines.length; j++) { // Iterate through data rows
+            const rowLine = lines[j];
+            const rowValues = [];
+            csvSplitRegex.lastIndex = 0; // Reset regex lastIndex for each new line
+            while ((match = csvSplitRegex.exec(rowLine)) !== null) {
+                if (match[1] !== undefined) {
+                    rowValues.push(match[1].replace(/""/g, '"').trim());
+                } else if (match[2] !== undefined) {
+                    rowValues.push(match[2].trim());
+                }
+            }
+
+            const featureName = rowValues[0] ? rowValues[0].trim() : "";
+            const featureValue = rowValues[i] ? rowValues[i].trim() : "";
 
             if (featureName.toLowerCase() === 'total cost') {
                 pkg.price = `NRs ${featureValue}`;
-            } else {
+            } else if (featureName) { // Only add if featureName is not empty
                 description += `${featureName}: ${featureValue}\n`;
             }
         }
-        pkg.fullDescription = description;
-        pkg.features = description.split('\n').slice(0, 2).join(', ');
+        pkg.fullDescription = description.trim(); // Trim final newline if any
+        pkg.features = description.split('\n').filter(f => f.trim() !== '').slice(0, 2).join(', ');
         packages.push(pkg);
     }
     return packages;
@@ -111,7 +142,16 @@ function generateProposal() {
     document.getElementById("proposal").classList.remove("d-none");
     updateProgressBar(3);
 
-    let proposalText = "Based on your selections, here are the details of the packages you've chosen:\n\n";
+    const currentDate = new Date();
+    const publishedDate = currentDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    
+    const expiryDate = new Date();
+    expiryDate.setDate(currentDate.getDate() + 3);
+    const formattedExpiryDate = expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    let proposalText = `Date Published: ${publishedDate}\n`;
+    proposalText += `Proposal Expiry: ${formattedExpiryDate}\n\n`;
+    proposalText += "Based on your selections, here are the details of the packages you've chosen:\n\n";
 
     const selectedPackages = document.querySelectorAll('input[type="radio"]:checked');
 
