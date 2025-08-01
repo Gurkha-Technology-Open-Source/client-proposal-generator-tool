@@ -27,10 +27,66 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function parseCsv(csv) {
+    const lines = csv.split('\n').filter(line => line.trim() !== '');
+    if (lines.length < 2) {
+        console.error("CSV data is too short to contain headers and data.");
+        return [];
+    }
+
+    const parseCsvLine = (line) => {
+        const values = [];
+        let inQuote = false;
+        let currentField = "";
+        for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            if (char === '"') {
+                if (inQuote && i + 1 < line.length && line[i + 1] === '"') {
+                    currentField += '"';
+                    i++;
+                } else {
+                    inQuote = !inQuote;
+                }
+            } else if (char === ',' && !inQuote) {
+                values.push(currentField.trim());
+                currentField = "";
+            } else {
+                currentField += char;
+            }
+        }
+        values.push(currentField.trim());
+        return values;
+    };
+
+    const headerLine = lines[1];
+    const headers = parseCsvLine(headerLine);
+
     const packages = [];
-    packages.push({ id: "test1", name: "Test Package 1" });
-    packages.push({ id: "test2", name: "Test Package 2" });
-    console.log("Packages after simple pushes:", packages);
+
+    for (let i = 1; i < headers.length; i++) {
+        const pkg = {
+            id: headers[i].replace(/\s+/g, '-').toLowerCase(),
+            name: headers[i],
+            price: "",
+            features: "",
+            fullDescription: ""
+        };
+        let description = "";
+
+        for (let j = 2; j < lines.length; j++) {
+            const rowValues = parseCsvLine(lines[j]);
+            const featureName = rowValues[0] ? rowValues[0].trim() : "";
+            const featureValue = rowValues[i] ? rowValues[i].trim() : "";
+
+            if (featureName.toLowerCase() === 'total cost') {
+                pkg.price = `NRs ${featureValue}`;
+            } else if (featureName) {
+                description += `${featureName}: ${featureValue}\n`;
+            }
+        }
+        pkg.fullDescription = description.trim();
+        pkg.features = description.split('\n').filter(f => f.trim() !== '').slice(0, 2).join(', ');
+        packages.push(pkg);
+    }
     return packages;
 }
 
@@ -50,12 +106,10 @@ function nextStep() {
     packageOptionsContainer.innerHTML = "";
 
     const selectedServices = Array.from(document.querySelectorAll('input[name="service"]:checked')).map(cb => cb.id);
-    console.log("Selected Services:", selectedServices); // Debugging line
 
     selectedServices.forEach(serviceId => {
         const service = window.proposalData.services.find(s => s.id === serviceId);
         if (service) {
-            console.log("Service found:", service.name, "Packages:", service.packages); // Debugging line
             const serviceOptionsDiv = document.createElement("div");
             serviceOptionsDiv.className = "service-options mb-4";
             serviceOptionsDiv.innerHTML = `<h5>${service.name} Packages:</h5>`;
@@ -72,8 +126,6 @@ function nextStep() {
             });
 
             packageOptionsContainer.appendChild(serviceOptionsDiv);
-        } else {
-            console.log("Service not found for ID:", serviceId); // Debugging line
         }
     });
 }
