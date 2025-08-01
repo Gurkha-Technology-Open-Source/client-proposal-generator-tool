@@ -27,57 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function parseCsv(csv) {
-    const lines = csv.split('\n').filter(line => line.trim() !== ''); // Filter out empty lines
-    if (lines.length < 2) {
-        console.error("CSV data is too short to contain headers and data.");
-        return [];
-    }
-
-    // Regex to split CSV lines, handling commas within quotes
-    const csvSplitRegex = /(?:"([^"]*(?:""[^"]*)*)"|([^,]*)),?/g;
-
-    // Parse headers from the second line
-    const headerLine = lines[1];
-    const headers = [];
-    let match;
-    while ((match = csvSplitRegex.exec(headerLine)) !== null) {
-        if (match[1] !== undefined) {
-            headers.push(match[1].replace(/""/g, '"').trim()); // Quoted value
-        } else if (match[2] !== undefined) {
-            headers.push(match[2].trim()); // Unquoted value
-        }
-    }
-
     const packages = [];
-
-    // Start parsing data from the third line (index 2)
-    for (let i = 1; i < headers.length; i++) { // Iterate through package columns
-        const pkg = {
-            id: headers[i].replace(/\s+/g, '-').toLowerCase(),
-            name: headers[i],
-            price: "",
-            features: "",
-            fullDescription: ""
-        };
-        let description = "";
-
-        for (let j = 2; j < lines.length; j++) { // Iterate through data rows
-            const rowLine = lines[j];
-            const rowValues = rowLine.split(',').map(val => val.trim()); // Simplified parsing for diagnosis
-
-            const featureName = rowValues[0] ? rowValues[0].trim() : "";
-            const featureValue = rowValues[i] ? rowValues[i].trim() : "";
-
-            if (featureName.toLowerCase() === 'total cost') {
-                pkg.price = `NRs ${featureValue}`;
-            } else if (featureName) { // Only add if featureName is not empty
-                description += `${featureName}: ${featureValue}\n`;
-            }
-        }
-        pkg.fullDescription = description.trim(); // Trim final newline if any
-        pkg.features = description.split('\n').filter(f => f.trim() !== '').slice(0, 2).join(', ');
-        packages.push(pkg);
-    }
+    packages.push({ id: "test1", name: "Test Package 1" });
+    packages.push({ id: "test2", name: "Test Package 2" });
+    console.log("Packages after simple pushes:", packages);
     return packages;
 }
 
