@@ -54,22 +54,42 @@ The **Client Proposal Generator Tool** is a web application designed to streamli
 ```bash
 client-proposal-generator-tool/
 ├── index.html                # Main HTML file
-├── scripts.js                # JavaScript file
+├── scripts.js                # JavaScript logic
+├── style.css                 # Custom styles
+├── data.json                 # Service and package data
 ├── README.md                 # Project overview and instructions
+├── documentation.md          # Technical documentation
+├── plan.md                   # Future implementation plan
+├── LICENSE                   # MIT License
 └── .gitignore                # Files to be ignored by Git
-Contributing
+```
+
+---
+
+## Contributing
+
 We welcome contributions! If you'd like to contribute:
 
-Fork the repository.
-Create a new branch (git checkout -b feature-branch).
-Commit your changes (git commit -m 'Add feature').
-Push the branch (git push origin feature-branch).
-Open a pull request for review.
-License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Commit your changes (`git commit -m 'Add feature'`).
+4. Push the branch (`git push origin feature-branch`).
+5. Open a pull request for review.
 
-Contact
+For detailed contribution guidelines, please see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## Contact
+
 For any inquiries, feel free to reach out:
 
-Email: info@gurkhatech.com
-Website: gurkhatech.com
+- **Email**: info@gurkhatech.com
+- **Website**: [gurkhatech.com](https://gurkhatech.com)
+- **GitHub**: [GurkhaTechnology](https://github.com/GurkhaTechnology)
