@@ -1,4 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const preloader = document.getElementById('preloader');
+    const progressBar = preloader.querySelector('.progress-bar');
+    let progress = 0;
+
+    const interval = setInterval(() => {
+        progress += 10;
+        progressBar.style.width = progress + '%';
+        progressBar.setAttribute('aria-valuenow', progress);
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        }
+    }, 200);
+
     fetch("data.json")
         .then(response => response.json())
         .then(data => {
