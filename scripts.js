@@ -77,7 +77,7 @@ function parseCsv(csv) {
         return values;
     };
 
-    const headerLine = lines[1];
+    const headerLine = lines[0];
     const headers = parseCsvLine(headerLine);
 
     const packages = [];
@@ -92,7 +92,7 @@ function parseCsv(csv) {
         };
         let description = "";
 
-        for (let j = 2; j < lines.length; j++) {
+        for (let j = 1; j < lines.length; j++) {
             const rowValues = parseCsvLine(lines[j]);
             const featureName = rowValues[0] ? rowValues[0].trim() : "";
             const featureValue = rowValues[i] ? rowValues[i].trim() : "";
