@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A simple tool to generate client proposals quickly and easily.">
+    <meta name="keywords" content="proposal generator, client proposal, web development proposal, digital marketing proposal">
     <title>Client Proposal Generator</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
@@ -56,6 +58,7 @@
             <div class="card-header">Your Custom Proposal</div>
             <div class="card-body">
                 <div id="proposalPreview" class="border p-3 mb-3" style="white-space: pre-wrap; max-height: 400px; overflow-y: auto;"></div>
+                <button type="button" class="btn btn-secondary mt-4" onclick="prevStep(2)">Back</button>
                 <button type="button" class="btn btn-secondary mt-4" onclick="resetForm()">Start Over</button>
                 <button type="button" class="btn btn-primary mt-4 float-right" onclick="downloadPDF()">Download PDF</button>
             </div>
@@ -63,7 +66,8 @@
     </div>
 </div>
 
-<script src="scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="scripts.js"></script>
 </body>
 </html>
