@@ -42,35 +42,39 @@
             <form id="serviceForm" class="d-none">
                 <!-- Services will be dynamically loaded here -->
             </form>
-            <button type="button" class="btn btn-primary mt-4 float-right d-none" id="nextStepButton" onclick="nextStep()">Next</button>
-        </div>
-    </div>
-
-    <!-- Step 2: Package Questions -->
-    <div id="package-questions" class="card d-none">
-        <div class="card-header">Choose Packages</div>
-        <div class="card-body">
-            <div id="package-options-container">
-                <!-- Package options will be dynamically loaded here -->
+                    <button type="button" class="btn btn-secondary mt-4" onclick="clearSelection()">Clear Selection</button>
+                    <button type="button" class="btn btn-info mt-4" onclick="selectAllServices()">Select All</button>
+                    <button type="button" class="btn btn-primary mt-4 float-right d-none" id="nextStepButton" onclick="nextStep()">Next</button>
+                </div>
             </div>
-            <button type="button" class="btn btn-secondary mt-4" onclick="prevStep(1)">Back</button>
-            <button type="button" class="btn btn-primary mt-4 float-right" onclick="generateProposal()">Generate Proposal</button>
-        </div>
-    </div>
-
-    <!-- Step 3: Display Proposal -->
-    <div id="proposal" class="d-none">
-        <div class="card">
-            <div class="card-header">Your Custom Proposal</div>
-            <div class="card-body">
-                <div id="proposalPreview" class="border p-3 mb-3" style="white-space: pre-wrap; max-height: 400px; overflow-y: auto;"></div>
-                <button type="button" class="btn btn-secondary mt-4" onclick="prevStep(2)">Back</button>
-                <button type="button" class="btn btn-secondary mt-4" onclick="resetForm()">Start Over</button>
-                <button type="button" class="btn btn-primary mt-4 float-right" onclick="downloadPDF()">Download PDF</button>
+            
+            <!-- Step 2: Package Questions -->
+            <div id="package-questions" class="card d-none">
+                <div class="card-header">Choose Packages</div>
+                <div class="card-body">
+                    <div id="package-options-container">
+                        <!-- Package options will be dynamically loaded here -->
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-4" onclick="prevStep(1)">Back</button>
+                    <button type="button" class="btn btn-primary mt-4 float-right" onclick="generateProposal()">Generate Proposal</button>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
+            
+            <!-- Step 3: Display Proposal -->
+            <div id="proposal" class="d-none">
+                <div class="card">
+                    <div class="card-header">Your Custom Proposal</div>
+                    <div class="card-body">
+                        <div id="proposalPreview" class="border p-3 mb-3" style="white-space: pre-wrap; max-height: 400px; overflow-y: auto;"></div>
+                        <div class="text-right">
+                            <strong>Total Cost:</strong> <span id="totalCost"></span>
+                        </div>
+                        <button type="button" class="btn btn-secondary mt-4" onclick="prevStep(2)">Back</button>
+                        <button type="button" class="btn btn-secondary mt-4" onclick="resetForm()">Start Over</button>
+                        <button type="button" class="btn btn-primary mt-4 float-right" onclick="downloadPDF()">Download PDF</button>
+                    </div>
+                </div>
+            </div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>

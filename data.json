@@ -32,36 +32,7 @@
       "id": "digitalMarketing",
       "name": "Digital Marketing",
       "description": "Boosts your online presence with strategic content, ad campaigns, and social media engagement.",
-      "packages": [
-        {
-          "id": "package-gt-1",
-          "name": "Package GT 1",
-          "price": "NRs 50,000",
-          "features": "Page Management and Handling: Yes, Posts for social media: 3",
-          "fullDescription": "Page Management and Handling: Yes\nPosts for social media: 3\nDesign Adaptation: Yes\nFacebook + Instagram (Concept + Creation + Posting): Yes\nCredit in USD: $64\nDigital Audience identification: Yes\nDigital Campaign Consultation: Yes\nFESTIVE POST: 1-2\nCampaigns (Post Promotion/Video Views/ Lead Generation): \nExpected Reach: 80K+"
-        },
-        {
-          "id": "package-gt-2",
-          "name": "Package GT 2",
-          "price": "NRs 75,000",
-          "features": "Page Management and Handling: Yes, Posts for social media: 6",
-          "fullDescription": "Page Management and Handling: Yes\nPosts for social media: 6\nDesign Adaptation: Yes\nFacebook + Instagram (Concept + Creation + Posting): Yes\nCredit in USD: $96\nDigital Audience identification: Yes\nDigital Campaign Consultation: Yes\nFESTIVE POST: 2-3\nCampaigns (Post Promotion/Video Views/ Lead Generation): \nExpected Reach: 133K+"
-        },
-        {
-          "id": "package-gt-3",
-          "name": "Package GT 3",
-          "price": "NRs 120,000",
-          "features": "Page Management and Handling: Yes, Posts for social media: 15",
-          "fullDescription": "Page Management and Handling: Yes\nPosts for social media: 15\nDesign Adaptation: Yes\nFacebook + Instagram (Concept + Creation + Posting): Yes\nCredit in USD: $154\nDigital Audience identification: Yes\nDigital Campaign Consultation: Yes\nFESTIVE POST: 3-4\nCampaigns (Post Promotion/Video Views/ Lead Generation): \nExpected Reach: 266K+"
-        },
-        {
-          "id": "package-gt-4",
-          "name": "Package GT 4",
-          "price": "NRs 50,000",
-          "features": "Page Management and Handling: Yes, Posts for social media: 15",
-          "fullDescription": "Page Management and Handling: Yes\nPosts for social media: 15\nDesign Adaptation: Yes\nFacebook + Instagram (Concept + Creation + Posting): Yes\nCredit in USD: up to $200 client managed\nDigital Audience identification: Yes\nDigital Campaign Consultation: Yes\nFESTIVE POST: 3-4\nCampaigns (Post Promotion/Video Views/ Lead Generation): \nExpected Reach: 300K+"
-        }
-      ]
+      "packages": []
     },
     {
       "id": "webHosting",
