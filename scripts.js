@@ -289,13 +289,25 @@ function resetForm() {
 
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const proposalHTML = document.getElementById("proposalPreview").innerHTML;
-    doc.html(proposalHTML, {
-        callback: function (doc) {
-            doc.save("proposal.pdf");
-        },
-        x: 10,
-        y: 10
+    const proposal = document.getElementById('proposalPreview');
+
+    html2canvas(proposal).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4'
+        });
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+        const ratio = canvasWidth / canvasHeight;
+        const width = pdfWidth - 20;
+        const height = width / ratio;
+
+        pdf.addImage(imgData, 'PNG', 10, 10, width, height);
+        pdf.save('proposal.pdf');
     });
 }
