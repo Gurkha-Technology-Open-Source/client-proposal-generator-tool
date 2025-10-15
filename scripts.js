@@ -33,10 +33,11 @@ document.addEventListener("DOMContentLoaded", () => {
         window.proposalData.services.forEach(service => {
             const serviceDiv = document.createElement("div");
             serviceDiv.className = "form-check";
-            serviceDiv.innerHTML = "\n                    <input type=\"checkbox\" class=\"form-check-input\" id=\"" + service.id + "\" name=\"service\" value=\"" + service.name + "\">
-                    <label class=\"form-check-label\" for=\"" + service.id + "\">" + service.name + "</label>
-                    <small class=\"form-text text-muted\">" + service.description + "</small>
-                ";
+            serviceDiv.innerHTML = `
+                    <input type="checkbox" class="form-check-input" id="${service.id}" name="service" value="${service.name}">
+                    <label class="form-check-label" for="${service.id}">${service.name}</label>
+                    <small class="form-text text-muted">${service.description}</small>
+                `;
             serviceForm.appendChild(serviceDiv);
         });
         document.getElementById("service-preloader").classList.add("d-none");
@@ -76,7 +77,7 @@ function parseCsv(csv) {
         return values;
     };
 
-    const headerLine = lines[1];
+    const headerLine = lines[0];
     const headers = parseCsvLine(headerLine);
 
     const packages = [];
@@ -91,7 +92,7 @@ function parseCsv(csv) {
         };
         let description = "";
 
-        for (let j = 2; j < lines.length; j++) {
+        for (let j = 1; j < lines.length; j++) {
             const rowValues = parseCsvLine(lines[j]);
             const featureName = rowValues[0] ? rowValues[0].trim() : "";
             const featureValue = rowValues[i] ? rowValues[i].trim() : "";
@@ -168,18 +169,24 @@ function nextStep() {
             serviceOptionsDiv.className = "service-options mb-4";
             let buttonsHTML = '';
             if (service.packages.length > 0) {
-                buttonsHTML = "\n                    <button type=\"button\" class=\"btn btn-sm btn-outline-primary mb-2\" onclick=\"toggleAllPackages('" + service.id + "', true)\">Select First</button>\n                    <button type=\"button\" class=\"btn btn-sm btn-outline-secondary mb-2\" onclick=\"toggleAllPackages('" + service.id + "', false)\">Deselect All</button>\n                ";
+                buttonsHTML = `
+                    <button type="button" class="btn btn-sm btn-outline-primary mb-2" onclick="toggleAllPackages('${service.id}', true)">Select First</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary mb-2" onclick="toggleAllPackages('${service.id}', false)">Deselect All</button>
+                `;
             }
-            serviceOptionsDiv.innerHTML = "\n                <h5>" + service.name + " Packages:</h5>\n                " + buttonsHTML +
-            "    ";
+            serviceOptionsDiv.innerHTML = `
+                <h5>${service.name} Packages:</h5>
+                ${buttonsHTML}
+            `;
 
             service.packages.forEach(pkg => {
                 const packageDiv = document.createElement("div");
                 packageDiv.className = "form-check";
-                packageDiv.innerHTML = "\n                    <input type=\"radio\" class=\"form-check-input\" name=\"" + service.id + "Package\" id=\"" + pkg.id + "\" value=\"" + pkg.name + "\" data-service=\"" + service.id + "\" onchange=\"updateTotalCost()\">
-                    <label class=\"form-check-label radio-label\" for=\"" + pkg.id + "\">" + pkg.name + " - " + pkg.price + "</label>
-                    <small class=\"form-text text-muted\">" + pkg.features + "</small>
-                ";
+                packageDiv.innerHTML = `
+                    <input type="radio" class="form-check-input" name="${service.id}Package" id="${pkg.id}" value="${pkg.name}" data-service="${service.id}" onchange="updateTotalCost()">
+                    <label class="form-check-label radio-label" for="${pkg.id}">${pkg.name} - ${pkg.price}</label>
+                    <small class="form-text text-muted">${pkg.features}</small>
+                `;
                 serviceOptionsDiv.appendChild(packageDiv);
             });
 
@@ -227,7 +234,15 @@ function generateProposal() {
     expiryDate.setDate(currentDate.getDate() + 3);
     const formattedExpiryDate = expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    let proposalHTML = "\n        <div class=\"proposal-header\">\n            <p><strong>Date Published:</strong> " + publishedDate + "</p>\n            <p><strong>Proposal Expiry:</strong> " + formattedExpiryDate + "</p>\n        </div>\n        <hr>\n        <h4>Proposal Details</h4>\n        <p>Based on your selections, here are the details of the packages you've chosen:</p>\n    ";
+    let proposalHTML = `
+        <div class="proposal-header">
+            <p><strong>Date Published:</strong> ${publishedDate}</p>
+            <p><strong>Proposal Expiry:</strong> ${formattedExpiryDate}</p>
+        </div>
+        <hr>
+        <h4>Proposal Details</h4>
+        <p>Based on your selections, here are the details of the packages you've chosen:</p>
+    `;
 
     const selectedPackages = document.querySelectorAll('input[type="radio"]:checked');
     let totalCost = 0;
@@ -238,7 +253,13 @@ function generateProposal() {
         if (service) {
             const pkg = service.packages.find(p => p.name === pkgRadio.value);
             if (pkg) {
-                proposalHTML += "\n                    <div class=\"package-details\">\n                        <h5>" + service.name + " Package: " + pkg.name + "</h5>\n                        <p><strong>Price:</strong> " + pkg.price + "</p>\n                        <p>" + pkg.fullDescription.replace(/\n/g, '<br>') + "</p>\n                    </div>\n                ";
+                proposalHTML += `
+                    <div class="package-details">
+                        <h5>${service.name} Package: ${pkg.name}</h5>
+                        <p><strong>Price:</strong> ${pkg.price}</p>
+                        <p>${pkg.fullDescription.replace(/\n+/g, '<br>')}</p>
+                    </div>
+                `;
                 const priceString = pkg.price.replace(/[^0-9]/g, '');
                 if (priceString) {
                     totalCost += parseInt(priceString, 10);
@@ -247,7 +268,12 @@ function generateProposal() {
         }
     });
 
-    proposalHTML += "\n        <hr>\n        <div class=\"text-right\">\n            <h5>Total Cost: NRs " + totalCost.toLocaleString() + "</h5>\n        </div>\n    ";
+    proposalHTML += `
+        <hr>
+        <div class="text-right">
+            <h5>Total Cost: NRs ${totalCost.toLocaleString()}</h5>
+        </div>
+    `;
 
     document.getElementById("proposalPreview").innerHTML = proposalHTML;
     document.getElementById('totalCost').innerText = `NRs ${totalCost.toLocaleString()}`;
@@ -263,13 +289,48 @@ function resetForm() {
 
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    const proposalHTML = document.getElementById("proposalPreview").innerHTML;
-    doc.html(proposalHTML, {
-        callback: function (doc) {
-            doc.save("proposal.pdf");
-        },
-        x: 10,
-        y: 10
+    const proposal = document.getElementById('proposalPreview');
+    const originalMaxHeight = proposal.style.maxHeight;
+    const originalOverflowY = proposal.style.overflowY;
+
+    // Temporarily remove height restrictions to capture the whole content
+    proposal.style.maxHeight = 'none';
+    proposal.style.overflowY = 'visible';
+
+    html2canvas(proposal, {
+        scrollY: -window.scrollY,
+        windowWidth: proposal.scrollWidth,
+        windowHeight: proposal.scrollHeight
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4'
+        });
+
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        let heightLeft = pdfHeight;
+        let position = 0;
+
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft > 0) {
+            position = heightLeft - pdfHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+            heightLeft -= pageHeight;
+        }
+
+        pdf.save('proposal.pdf');
+
+        // Restore original styles
+        proposal.style.maxHeight = originalMaxHeight;
+        proposal.style.overflowY = originalOverflowY;
     });
 }
