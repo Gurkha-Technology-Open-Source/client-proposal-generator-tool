@@ -257,7 +257,7 @@ function generateProposal() {
                     <div class="package-details">
                         <h5>${service.name} Package: ${pkg.name}</h5>
                         <p><strong>Price:</strong> ${pkg.price}</p>
-                        <p>${pkg.fullDescription.replace(/\n/g, '<br>')}</p>
+                        <p>${pkg.fullDescription.replace(/\n+/g, '<br>')}</p>
                     </div>
                 `;
                 const priceString = pkg.price.replace(/[^0-9]/g, '');
@@ -290,8 +290,18 @@ function resetForm() {
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const proposal = document.getElementById('proposalPreview');
+    const originalMaxHeight = proposal.style.maxHeight;
+    const originalOverflowY = proposal.style.overflowY;
 
-    html2canvas(proposal).then(canvas => {
+    // Temporarily remove height restrictions to capture the whole content
+    proposal.style.maxHeight = 'none';
+    proposal.style.overflowY = 'visible';
+
+    html2canvas(proposal, {
+        scrollY: -window.scrollY,
+        windowWidth: proposal.scrollWidth,
+        windowHeight: proposal.scrollHeight
+    }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF({
             orientation: 'p',
@@ -299,15 +309,28 @@ function downloadPDF() {
             format: 'a4'
         });
 
+        const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
-        const ratio = canvasWidth / canvasHeight;
-        const width = pdfWidth - 20;
-        const height = width / ratio;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const pageHeight = pdf.internal.pageSize.getHeight();
 
-        pdf.addImage(imgData, 'PNG', 10, 10, width, height);
+        let heightLeft = pdfHeight;
+        let position = 0;
+
+        pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft > 0) {
+            position = heightLeft - pdfHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+            heightLeft -= pageHeight;
+        }
+
         pdf.save('proposal.pdf');
+
+        // Restore original styles
+        proposal.style.maxHeight = originalMaxHeight;
+        proposal.style.overflowY = originalOverflowY;
     });
 }
