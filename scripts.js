@@ -49,7 +49,7 @@ function nextStep() {
                 packageDiv.className = "form-check";
                 packageDiv.innerHTML = `
                     <input type="radio" class="form-check-input" name="${service.id}Package" id="${pkg.id}" value="${pkg.name}" data-service="${service.id}">
-                    <label class="form-check-label" for="${pkg.id}">${pkg.name} - ${pkg.price}</label>
+                    <label class="form-check-label radio-label" for="${pkg.id}">${pkg.name} - ${pkg.price}</label>
                     <small class="form-text text-muted">${pkg.features}</small>
                 `;
                 serviceOptionsDiv.appendChild(packageDiv);
