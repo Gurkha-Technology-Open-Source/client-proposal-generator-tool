@@ -1,4 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const preloader = document.getElementById('preloader');
+    const progressBar = preloader.querySelector('.progress-bar');
+    let progress = 0;
+
+    const interval = setInterval(() => {
+        progress += 10;
+        progressBar.style.width = progress + '%';
+        progressBar.setAttribute('aria-valuenow', progress);
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        }
+    }, 200);
+
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4YHLJ-QG-5mniI5lWB9KsfvItj2zngZwIQa0Lb-FD4O0sYCRUTb_LcOZPxFYY_w5_rASmd_TaXipw/pub?gid=0&single=true&output=csv";
     const cacheBustedUrl = `${csvUrl}&_=${new Date().getTime()}`;
 
@@ -16,11 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
         window.proposalData.services.forEach(service => {
             const serviceDiv = document.createElement("div");
             serviceDiv.className = "form-check";
-            serviceDiv.innerHTML = `
-                <input type="checkbox" class="form-check-input" id="${service.id}" name="service" value="${service.name}">
-                <label class="form-check-label" for="${service.id}">${service.name}</label>
-                <small class="form-text text-muted">${service.description}</small>
-            `;
+            serviceDiv.innerHTML = "\n                    <input type=\"checkbox\" class=\"form-check-input\" id=\"" + service.id + "\" name=\"service\" value=\"" + service.name + "\">
+                    <label class=\"form-check-label\" for=\"" + service.id + "\">" + service.name + "</label>
+                    <small class=\"form-text text-muted\">" + service.description + "</small>
+                ";
             serviceForm.appendChild(serviceDiv);
         });
         document.getElementById("service-preloader").classList.add("d-none");
@@ -93,6 +109,41 @@ function parseCsv(csv) {
     return packages;
 }
 
+function clearSelection() {
+    const checkboxes = document.querySelectorAll('input[name="service"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+    });
+}
+
+function selectAllServices() {
+    const checkboxes = document.querySelectorAll('input[name="service"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = true;
+    });
+}
+
+function updateTotalCost() {
+    let totalCost = 0;
+    const selectedPackages = document.querySelectorAll('input[type="radio"]:checked');
+
+    selectedPackages.forEach(pkgRadio => {
+        const serviceId = pkgRadio.dataset.service;
+        const service = window.proposalData.services.find(s => s.id === serviceId);
+        if (service) {
+            const pkg = service.packages.find(p => p.name === pkgRadio.value);
+            if (pkg) {
+                const priceString = pkg.price.replace(/[^0-9]/g, '');
+                if (priceString) {
+                    totalCost += parseInt(priceString, 10);
+                }
+            }
+        }
+    });
+
+    document.getElementById('totalCost').innerText = `NRs ${totalCost.toLocaleString()}`;
+}
+
 function updateProgressBar(step) {
     const progressBar = document.querySelector(".progress-bar");
     const percentage = (step / 3) * 100;
@@ -115,22 +166,41 @@ function nextStep() {
         if (service) {
             const serviceOptionsDiv = document.createElement("div");
             serviceOptionsDiv.className = "service-options mb-4";
-            serviceOptionsDiv.innerHTML = `<h5>${service.name} Packages:</h5>`;
+            let buttonsHTML = '';
+            if (service.packages.length > 0) {
+                buttonsHTML = "\n                    <button type=\"button\" class=\"btn btn-sm btn-outline-primary mb-2\" onclick=\"toggleAllPackages('" + service.id + "', true)\">Select First</button>\n                    <button type=\"button\" class=\"btn btn-sm btn-outline-secondary mb-2\" onclick=\"toggleAllPackages('" + service.id + "', false)\">Deselect All</button>\n                ";
+            }
+            serviceOptionsDiv.innerHTML = "\n                <h5>" + service.name + " Packages:</h5>\n                " + buttonsHTML +
+            "    ";
 
             service.packages.forEach(pkg => {
                 const packageDiv = document.createElement("div");
                 packageDiv.className = "form-check";
-                packageDiv.innerHTML = `
-                    <input type="radio" class="form-check-input" name="${service.id}Package" id="${pkg.id}" value="${pkg.name}" data-service="${service.id}">
-                    <label class="form-check-label" for="${pkg.id}">${pkg.name} - ${pkg.price}</label>
-                    <small class="form-text text-muted">${pkg.features}</small>
-                `;
+                packageDiv.innerHTML = "\n                    <input type=\"radio\" class=\"form-check-input\" name=\"" + service.id + "Package\" id=\"" + pkg.id + "\" value=\"" + pkg.name + "\" data-service=\"" + service.id + "\" onchange=\"updateTotalCost()\">
+                    <label class=\"form-check-label radio-label\" for=\"" + pkg.id + "\">" + pkg.name + " - " + pkg.price + "</label>
+                    <small class=\"form-text text-muted\">" + pkg.features + "</small>
+                ";
                 serviceOptionsDiv.appendChild(packageDiv);
             });
 
             packageOptionsContainer.appendChild(serviceOptionsDiv);
         }
     });
+    updateTotalCost();
+}
+
+function toggleAllPackages(serviceId, select) {
+    const radioButtons = document.querySelectorAll(`input[name="${serviceId}Package"]`);
+    if (select) {
+        if(radioButtons.length > 0) {
+            radioButtons[0].checked = true;
+        }
+    } else {
+        radioButtons.forEach(radio => {
+            radio.checked = false;
+        });
+    }
+    updateTotalCost();
 }
 
 function prevStep(step) {
@@ -138,6 +208,10 @@ function prevStep(step) {
         document.getElementById("package-questions").classList.add("d-none");
         document.getElementById("service-selection").classList.remove("d-none");
         updateProgressBar(1);
+    } else if (step === 2) {
+        document.getElementById("proposal").classList.add("d-none");
+        document.getElementById("package-questions").classList.remove("d-none");
+        updateProgressBar(2);
     }
 }
 
@@ -153,11 +227,10 @@ function generateProposal() {
     expiryDate.setDate(currentDate.getDate() + 3);
     const formattedExpiryDate = expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-    let proposalText = `Date Published: ${publishedDate}\n`;
-    proposalText += `Proposal Expiry: ${formattedExpiryDate}\n\n`;
-    proposalText += "Based on your selections, here are the details of the packages you've chosen:\n\n";
+    let proposalHTML = "\n        <div class=\"proposal-header\">\n            <p><strong>Date Published:</strong> " + publishedDate + "</p>\n            <p><strong>Proposal Expiry:</strong> " + formattedExpiryDate + "</p>\n        </div>\n        <hr>\n        <h4>Proposal Details</h4>\n        <p>Based on your selections, here are the details of the packages you've chosen:</p>\n    ";
 
     const selectedPackages = document.querySelectorAll('input[type="radio"]:checked');
+    let totalCost = 0;
 
     selectedPackages.forEach(pkgRadio => {
         const serviceId = pkgRadio.dataset.service;
@@ -165,13 +238,19 @@ function generateProposal() {
         if (service) {
             const pkg = service.packages.find(p => p.name === pkgRadio.value);
             if (pkg) {
-                proposalText += `${service.name} Package: ${pkg.name}\n`;
-                proposalText += `${pkg.fullDescription}\n\n`;
+                proposalHTML += "\n                    <div class=\"package-details\">\n                        <h5>" + service.name + " Package: " + pkg.name + "</h5>\n                        <p><strong>Price:</strong> " + pkg.price + "</p>\n                        <p>" + pkg.fullDescription.replace(/\n/g, '<br>') + "</p>\n                    </div>\n                ";
+                const priceString = pkg.price.replace(/[^0-9]/g, '');
+                if (priceString) {
+                    totalCost += parseInt(priceString, 10);
+                }
             }
         }
     });
 
-    document.getElementById("proposalPreview").innerText = proposalText;
+    proposalHTML += "\n        <hr>\n        <div class=\"text-right\">\n            <h5>Total Cost: NRs " + totalCost.toLocaleString() + "</h5>\n        </div>\n    ";
+
+    document.getElementById("proposalPreview").innerHTML = proposalHTML;
+    document.getElementById('totalCost').innerText = `NRs ${totalCost.toLocaleString()}`;
 }
 
 function resetForm() {
@@ -185,7 +264,12 @@ function resetForm() {
 function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text(document.getElementById("proposalPreview").innerText, 10, 10);
-    doc.save("proposal.pdf");
+    const proposalHTML = document.getElementById("proposalPreview").innerHTML;
+    doc.html(proposalHTML, {
+        callback: function (doc) {
+            doc.save("proposal.pdf");
+        },
+        x: 10,
+        y: 10
+    });
 }
-
