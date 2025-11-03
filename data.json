@@ -61,6 +61,62 @@
           "fullDescription": "Our Business hosting plan is designed for high-traffic websites and e-commerce stores. It comes with 25GB of disk space, unmetered bandwidth, and 15 professional email accounts, ensuring top performance and reliability."
         }
       ]
+    },
+    {
+      "id": "graphicDesign",
+      "name": "Graphic Design",
+      "description": "Creates visual identities, marketing materials, and illustrations.",
+      "packages": [
+        {
+          "id": "logo",
+          "name": "Logo",
+          "price": "NRs 8,000",
+          "features": "3 concepts, 2 revisions, print-ready files.",
+          "fullDescription": "Professional logo design with multiple concepts and revisions, delivered in vector and raster formats suitable for web and print."
+        },
+        {
+          "id": "branding",
+          "name": "Branding",
+          "price": "NRs 30,000",
+          "features": "Logo, color palette, typography, brand guidelines.",
+          "fullDescription": "Comprehensive branding package including logo design, color system, typography, and a concise brand guideline to ensure consistent identity across channels."
+        },
+        {
+          "id": "marketing",
+          "name": "Marketing Collateral",
+          "price": "NRs 15,000",
+          "features": "Brochure, social templates, business card design.",
+          "fullDescription": "Design of essential marketing collateral such as brochures, social media templates, and business cards to promote your brand effectively."
+        }
+      ]
+    },
+    {
+      "id": "mobileApp",
+      "name": "Mobile App Development",
+      "description": "Designs and builds native and cross-platform mobile applications.",
+      "packages": [
+        {
+          "id": "prototype",
+          "name": "Prototype",
+          "price": "NRs 45,000",
+          "features": "Clickable prototype, basic UX design.",
+          "fullDescription": "An interactive prototype to validate app concepts and user flows, ideal for pitching or early testing."
+        },
+        {
+          "id": "standard",
+          "name": "Standard App",
+          "price": "NRs 150,000",
+          "features": "Up to 10 screens, API integration, 3 months support.",
+          "fullDescription": "Complete mobile app development for small to medium projects, including design, development, API integration and initial support."
+        },
+        {
+          "id": "enterprise",
+          "name": "Enterprise App",
+          "price": "NRs 400,000",
+          "features": "Custom features, admin panel, 1 year support.",
+          "fullDescription": "End-to-end enterprise-grade mobile application with custom features, scalability, admin dashboard and long-term support."
+        }
+      ]
     }
   ]
 }
