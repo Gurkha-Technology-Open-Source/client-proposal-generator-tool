@@ -251,7 +251,7 @@ function nextStep() {
     document.getElementById("service-selection").classList.add("d-none");
     document.getElementById("package-questions").classList.remove("d-none");
     // increment step (max 3)
-    updateProgressBar(Math.min(3, (window.currentStep || 1) + 1));
+    updateProgressBar(Math.min(3, window.currentStep + 1));
 
     const packageOptionsContainer = document.getElementById("package-options-container");
     packageOptionsContainer.innerHTML = "";
