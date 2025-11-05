@@ -1,7 +1,28 @@
 body {
-    background-color: #F5F7FA;
-    font-family: 'Montserrat', sans-serif;
-    color: #333333;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+    color: #222;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Subtle dot pattern overlay using a pseudo element */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.95;
+    z-index: 0;
+}
+
+/* Ensure main app content sits above the overlay */
+#app, main, .container {
+    position: relative;
+    z-index: 1;
 }
 
 #preloader {
