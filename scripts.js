@@ -513,9 +513,9 @@ function downloadPDF() {
 // small debounce helper and exposed debounced updater
 function debounce(fn, wait = 100) {
     let timer = null;
-    return function(...args) {
+    return (...args) => {
         clearTimeout(timer);
-        timer = setTimeout(() => fn.apply(this, args), wait);
+        timer = setTimeout(() => fn(...args), wait);
     };
 }
 window.debouncedUpdateTotalCost = debounce(() => updateTotalCost(), 120);
