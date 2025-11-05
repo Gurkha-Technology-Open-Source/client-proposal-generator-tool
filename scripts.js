@@ -494,7 +494,8 @@ function downloadPDF() {
         heightLeft -= pageHeight;
 
         while (heightLeft > 0) {
-            position = -(pdfHeight - heightLeft);
+            // Use the conventional calculation for position to avoid confusion.
+            position = heightLeft - pdfHeight;
             pdf.addPage();
             pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
             heightLeft -= pageHeight;
