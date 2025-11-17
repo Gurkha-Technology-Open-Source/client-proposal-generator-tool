@@ -104,6 +104,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }).catch(err => {
         console.error('Unexpected error loading data', err);
     });
+
+    const themeToggleBtn = document.getElementById("themeToggle");
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-theme");
+        themeToggleBtn.textContent = "☀️ Light Mode";
+        themeToggleBtn.classList.replace("btn-dark", "btn-light");
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+        document.body.classList.toggle("dark-theme");
+
+        const isDark = document.body.classList.contains("dark-theme");
+
+        // Update button & save
+        if (isDark) {
+            themeToggleBtn.textContent = "☀️ Light Mode";
+            themeToggleBtn.classList.replace("btn-dark", "btn-light");
+            localStorage.setItem("theme", "dark");
+        } else {
+            themeToggleBtn.textContent = "🌙 Dark Mode";
+            themeToggleBtn.classList.replace("btn-light", "btn-dark");
+            localStorage.setItem("theme", "light");
+        }
+    });
 });
 
 // improved parseCsv: trim BOM, support CRLF, keep quoted newlines (only minor tweaks)

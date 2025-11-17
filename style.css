@@ -1,3 +1,61 @@
+:root {
+    --bg-color: #f5f7fa;
+    --text-color: #222;
+    --card-bg: #ffffff;
+    --card-header-bg: #4A90E2;
+    --btn-primary-bg: #50E3C2;
+    --btn-primary-hover: #48CFAE;
+    --btn-secondary-bg: #E0E0E0;
+}
+
+.dark-theme {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --card-bg: #2c2c2c;
+    --card-header-bg: #333333;
+    --btn-primary-bg: #3cbfa3;
+    --btn-primary-hover: #34a58b;
+    --btn-secondary-bg: #444444;
+}
+
+/* Apply the variables */
+body {
+    background: var(--bg-color) !important;
+    color: var(--text-color) !important;
+}
+
+.card {
+    background-color: var(--card-bg) !important;
+}
+
+.card-header {
+    background-color: var(--card-header-bg) !important;
+}
+
+.btn-primary {
+    background-color: var(--btn-primary-bg) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-primary-hover) !important;
+}
+
+.btn-secondary {
+    background-color: var(--btn-secondary-bg) !important;
+}
+
+/* Toggle button styling */
+.theme-toggle-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 99999;
+    border-radius: 20px;
+}
+
+
+
+
 body {
     font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
     color: #222;
