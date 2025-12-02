@@ -65,6 +65,40 @@ body {
     background-size: cover;
 }
 
+.progress {
+    border-radius: 20px !important;
+    overflow: hidden; /* ensures fill stays inside */
+    background-color: #e2e8f0 !important;
+}
+
+.progress-bar {
+    border-radius: 0 !important; /* remove inner rounding to avoid gaps */
+}
+
+
+.progress-container {
+    width: 100%;
+    background: #e2e8f0; /* light gray */
+    border-radius: 10px;
+    height: 25px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-fill {
+    width: 30%; /* Change this value for progress */
+    background: #4b9ffb;
+    height: 100%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 600;
+    transition: width 0.3s ease;
+}
+
+
 /* Subtle dot pattern overlay using a pseudo element */
 body::before {
     content: "";

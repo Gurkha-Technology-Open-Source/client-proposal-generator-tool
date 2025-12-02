@@ -243,22 +243,20 @@ function updateTotalCost() {
 }
 
 function updateProgressBar(step) {
-    // ensure numeric and clamp between 1 and 3
     const totalSteps = 3;
     const newStep = Math.max(1, Math.min(totalSteps, Number(step) || 1));
     window.currentStep = newStep;
 
-    // pick a visible progress-bar (ignore hidden/preloader ones)
-    const bars = Array.from(document.querySelectorAll('.progress-bar'));
-    let progressBar = bars.find(b => b.offsetParent !== null && b.getBoundingClientRect().width > 0);
-    if (!progressBar) progressBar = bars[0];
-    if (!progressBar) return; // nothing to update
+    // FIX → target the visible progress bar
+    const bars = Array.from(document.querySelectorAll('.progress-fill'));
+    let progressBar = bars.find(b => b.offsetParent !== null) || bars[0];
+    if (!progressBar) return;
 
     const percentage = (newStep / totalSteps) * 100;
     progressBar.style.width = `${percentage}%`;
-    progressBar.setAttribute('aria-valuenow', Math.round(percentage));
     progressBar.textContent = `Step ${newStep}`;
 }
+
 
 function nextStep() {
     const selectedServices = Array.from(document.querySelectorAll('input[name="service"]:checked')).map(cb => cb.id);
