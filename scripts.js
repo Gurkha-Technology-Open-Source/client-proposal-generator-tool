@@ -467,6 +467,15 @@ function generateProposal() {
     totalDiv.appendChild(totalH5);
     fragment.appendChild(totalDiv);
 
+    fragment.appendChild(document.createElement('hr'));
+
+    const nextStepsDiv = document.createElement('div');
+    nextStepsDiv.className = 'next-steps mt-4 text-center';
+    const nextStepsP = document.createElement('p');
+    nextStepsP.innerHTML = '<strong>Ready to proceed?</strong> Schedule an online meeting with us:<br><a href="https://calendly.com/arjankc" target="_blank">https://calendly.com/arjankc</a>';
+    nextStepsDiv.appendChild(nextStepsP);
+    fragment.appendChild(nextStepsDiv);
+
     const preview = document.getElementById("proposalPreview");
     if (preview) {
         preview.innerHTML = '';

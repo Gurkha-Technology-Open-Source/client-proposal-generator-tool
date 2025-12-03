@@ -9,8 +9,10 @@ The **Client Proposal Generator Tool** is a web application designed to streamli
 ## Features
 
 - **Custom Proposal Generation**: Clients can input project details such as budget, scope, timelines, and goals.
+- **Comprehensive Service List**: Includes Web Development, Digital Marketing (SEO, Social Media, Google Ads, TikTok), Graphic Design, and more.
 - **Branded Templates**: All proposals follow the agency’s branded template, including logos, colors, and fonts.
 - **Downloadable PDF**: Clients can download the generated proposal as a PDF for easy sharing and review.
+- **Meeting Scheduling**: Integrated Calendly link for easy follow-up.
 - **User-Friendly Interface**: Simple form for clients to fill in their information quickly.
 - **Customizable Sections**: Proposal sections like introduction, goals, timeline, budget, and scope are tailored to each client.
 

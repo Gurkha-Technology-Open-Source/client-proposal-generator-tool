@@ -58,3 +58,20 @@ The JavaScript file handles the core logic of the application.
 
 1.  **In `index.html`**: Add or modify the radio buttons and labels within the respective service's package options `div`.
 2.  **In `scripts.js`**: Update the `generateProposal()` function to include the text for the new or modified packages.
+
+### 4.3. Customizing the Meeting Link
+
+The proposal footer includes a link to schedule a meeting. To change this:
+
+1.  **In `scripts.js`**: Search for the `nextStepsP.innerHTML` line inside the `generateProposal()` function.
+2.  **Update Link**: Replace `https://calendly.com/arjankc` with your desired URL in both the `href` attribute and the link text.
+
+## 5. Data Management
+
+The application uses `data.json` as the primary source for service and package definitions.
+
+- **Web Development**: Includes Starter, Standard, Premium, Static Website, and Custom Project.
+- **Digital Marketing**: Includes SEO (Basic/Advanced), Social Media (GT 1-4), Google Ads (Standard/Management Only), TikTok (Basic/Standard/Premium), and Custom Project.
+- **Other Services**: Web Hosting, Graphic Design, Mobile App Development.
+
+To add or modify packages, simply edit the `packages` array within the corresponding service object in `data.json`. The application will automatically load these changes.

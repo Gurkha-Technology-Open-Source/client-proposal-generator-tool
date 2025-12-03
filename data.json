@@ -25,6 +25,20 @@
           "price": "NRs 85,000",
           "features": "Includes up to 25 pages, SEO, and 1 year of support.",
           "fullDescription": "Our Premium package offers a complete solution for established businesses. It includes up to 25 pages, advanced SEO, e-commerce functionality, and a full year of priority support, ensuring your online presence is robust and scalable."
+        },
+        {
+          "id": "static-website",
+          "name": "Static Website Design",
+          "price": "NRs 18,000",
+          "features": "5-Page Static Website, Responsive Design, Fast & Secure.",
+          "fullDescription": "Tailored to meet your vision with a custom design approach. Includes a 5-page static website optimized for all devices, ensuring speed and reliability. Estimated duration: 1-2 weeks."
+        },
+        {
+          "id": "custom-web",
+          "name": "Custom Project",
+          "price": "NRs 1,200 - 1,800 / Hour",
+          "features": "Tailored solution based on complexity and duration.",
+          "fullDescription": "A fully customized web development solution tailored to your specific requirements. Pricing is based on the complexity of the task and the estimated hours required, ranging from NRs 1,200 to 1,800 per hour."
         }
       ]
     },
@@ -32,7 +46,92 @@
       "id": "digitalMarketing",
       "name": "Digital Marketing",
       "description": "Boosts your online presence with strategic content, ad campaigns, and social media engagement.",
-      "packages": []
+      "packages": [
+        {
+          "id": "seo-basic",
+          "name": "SEO - Basic Package",
+          "price": "NRs 15,000/mo",
+          "features": "Keyword Research, On-Page Optimization, Monthly Report.",
+          "fullDescription": "Includes in-depth keyword research, on-page optimization (meta titles, descriptions, headers), and a detailed monthly SEO performance report. Initial Setup Fee: NRs 5,000. Minimum duration: 3 months."
+        },
+        {
+          "id": "seo-advanced",
+          "name": "SEO - Advanced Package",
+          "price": "NRs 30,000/mo",
+          "features": "Includes Basic + Competitor Analysis, Link Building, Google Analytics.",
+          "fullDescription": "Everything in the Basic Package plus in-depth competitor analysis, off-page SEO (link building), and Google Analytics setup. Initial Setup Fee: NRs 5,000. Minimum duration: 6 months."
+        },
+        {
+          "id": "social-gt1",
+          "name": "Social Media - GT 1",
+          "price": "NRs 35,000",
+          "features": "3 Posts, $45 Ad Credit, Page Management.",
+          "fullDescription": "Includes page management, 3 posts (concept + creation + posting), design adaptation, digital audience identification, and campaign consultation. Includes $45 ad credit."
+        },
+        {
+          "id": "social-gt2",
+          "name": "Social Media - GT 2",
+          "price": "NRs 60,000",
+          "features": "6 Posts, $78 Ad Credit, Page Management.",
+          "fullDescription": "Includes page management, 6 posts (concept + creation + posting), design adaptation, digital audience identification, and campaign consultation. Includes $78 ad credit."
+        },
+        {
+          "id": "social-gt3",
+          "name": "Social Media - GT 3",
+          "price": "NRs 120,000",
+          "features": "15 Posts, $156 Ad Credit, Page Management.",
+          "fullDescription": "Includes page management, 15 posts (concept + creation + posting), design adaptation, digital audience identification, and campaign consultation. Includes $156 ad credit."
+        },
+        {
+          "id": "social-gt4",
+          "name": "Social Media - GT 4",
+          "price": "NRs 50,000",
+          "features": "Client Managed Credit (up to $200), 15 Posts, Page Management.",
+          "fullDescription": "Includes page management, 15 posts (concept + creation + posting), design adaptation, digital audience identification, and campaign consultation. Client manages ad credit (up to $200)."
+        },
+        {
+          "id": "google-ads",
+          "name": "Google Ads",
+          "price": "NRs 50,000/mo",
+          "features": "70k-100k Impressions, 2 Campaigns, $100 Credit.",
+          "fullDescription": "Includes campaign management (ad creation, audience identification, deployment, reporting) for 2 campaigns. Expected impressions: 70,000 - 100,000. Includes $100 ad credit."
+        },
+        {
+          "id": "google-ads-mgmt",
+          "name": "Google Ads - Management Only",
+          "price": "NRs 30,000/mo",
+          "features": "Campaign Management Only. Excludes Ad Credit.",
+          "fullDescription": "Professional management of your Google Ads campaigns. Includes ad creation, audience identification, ad deployment, and reporting. Ad credit is not included and must be funded directly by the client."
+        },
+        {
+          "id": "tiktok-basic",
+          "name": "TikTok - Basic",
+          "price": "NRs 30,000",
+          "features": "4 Videos, Scripting, Shooting, Editing.",
+          "fullDescription": "Creation of 4 engaging TikTok videos (up to 30s). Includes video scripting, concept development, shooting, editing, and basic sound integration. Duration: 2-4 weeks."
+        },
+        {
+          "id": "tiktok-standard",
+          "name": "TikTok - Standard",
+          "price": "NRs 40,000",
+          "features": "8 Videos, Enhanced Editing.",
+          "fullDescription": "Creation of 8 creative TikTok videos (up to 30s). Includes video scripting, concept development, shooting, and enhanced editing with captivating captions. Duration: 4-6 weeks."
+        },
+        {
+          "id": "tiktok-premium",
+          "name": "TikTok - Premium",
+          "price": "NRs 70,000",
+          "features": "16 Videos, Advanced Scripting & Editing.",
+          "fullDescription": "Creation of 16 high-quality TikTok videos (up to 60s). Includes advanced scripting, professional shooting, premium editing, and engaging subtitles. Duration: 6-8 weeks."
+        },
+        {
+          "id": "custom-digital",
+          "name": "Custom Project",
+          "price": "NRs 1,200 - 1,800 / Hour",
+          "features": "Tailored digital marketing strategy based on complexity.",
+          "fullDescription": "A fully customized digital marketing strategy tailored to your specific goals. Pricing is based on the complexity of the campaign and the estimated hours required, ranging from NRs 1,200 to 1,800 per hour."
+        }
+      ]
     },
     {
       "id": "webHosting",
