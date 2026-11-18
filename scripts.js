@@ -21,88 +21,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, 200);
 
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4YHLJ-QG-5mniI5lWB9KsfvItj2zngZwIQa0Lb-FD4O0sYCRUTb_LcOZPxFYY_w5_rASmd_TaXipw/pub?gid=0&single=true&output=csv";
-    const cacheBustedUrl = `${csvUrl}&_=${new Date().getTime()}`;
-
-    // improved fetch + UI fallback (replaces the Promise.all ... then(...) block)
-    Promise.allSettled([
-        fetch("data.json").then(r => r.json()),
-        fetch(cacheBustedUrl).then(r => r.text())
-    ]).then(results => {
-        const localResult = results[0];
-        const csvResult = results[1];
-
-        if (localResult.status !== 'fulfilled') {
-            console.error('Failed to load local data.json', localResult.reason);
-            // show minimal error to user
-            document.getElementById('service-preloader').classList.add('d-none');
-            const errDiv = document.createElement('div');
-            errDiv.className = 'alert alert-danger';
-            errDiv.textContent = 'Failed to load services data.';
-            document.getElementById('serviceForm').appendChild(errDiv);
+    loadProposalRates().then(result => {
+        if (!result || !result.ok || !result.data) {
+            showRatesLoadError();
             return;
         }
 
-        window.proposalData = localResult.value;
-
-        let csvDataText = null;
-        if (csvResult && csvResult.status === 'fulfilled') {
-            csvDataText = csvResult.value;
-        } else {
-            console.warn('CSV fetch failed, using local data only.', csvResult && csvResult.reason);
-        }
-
-        const digitalMarketingService = window.proposalData.services.find(s => s.id === "digitalMarketing");
-        if (digitalMarketingService) {
-            if (csvDataText) {
-                digitalMarketingService.packages = parseCsv(csvDataText);
-            } else if (!Array.isArray(digitalMarketingService.packages)) {
-                digitalMarketingService.packages = [];
-            }
-        }
-
-        const serviceForm = document.getElementById("serviceForm");
-        window.proposalData.services.forEach(service => {
-            const serviceDiv = document.createElement("div");
-            serviceDiv.className = "form-check";
-
-            const input = document.createElement('input');
-            input.type = 'checkbox';
-            input.className = 'form-check-input';
-            input.id = service.id;
-            input.name = 'service';
-            input.value = service.name;
-
-            const label = document.createElement('label');
-            label.className = 'form-check-label';
-            label.htmlFor = service.id;
-            label.textContent = service.name;
-
-            const small = document.createElement('small');
-            small.className = 'form-text text-muted';
-            small.textContent = service.description;
-
-            serviceDiv.appendChild(input);
-            serviceDiv.appendChild(label);
-            serviceDiv.appendChild(document.createElement('br'));
-            serviceDiv.appendChild(small);
-
-            serviceForm.appendChild(serviceDiv);
-        });
-
-        // Improve: disable Next until a service is selected and toggle on change
-        const nextBtn = document.getElementById("nextStepButton");
-        if (nextBtn) nextBtn.disabled = true;
-        serviceForm.addEventListener('change', () => {
-            const anyChecked = serviceForm.querySelectorAll('input[name="service"]:checked').length > 0;
-            if (nextBtn) nextBtn.disabled = !anyChecked;
-        });
-
-        document.getElementById("service-preloader").classList.add("d-none");
-        serviceForm.classList.remove("d-none");
-        if (nextBtn) nextBtn.classList.remove("d-none");
+        window.proposalData = result.data;
+        showRatesNotice(result.source, result.reason);
+        renderServiceForm();
     }).catch(err => {
         console.error('Unexpected error loading data', err);
+        showRatesLoadError();
     });
 
     const themeToggleBtn = document.getElementById("themeToggle");
@@ -133,74 +63,146 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// improved parseCsv: trim BOM, support CRLF, keep quoted newlines (only minor tweaks)
-function parseCsv(csv) {
-    if (!csv) return [];
-    // Remove BOM if present
-    if (csv.charCodeAt(0) === 0xFEFF) csv = csv.slice(1);
-    const lines = csv.replace(/\r\n/g, '\n').split('\n').filter(line => line.trim() !== '');
-    if (lines.length < 2) {
-        console.error("CSV data is too short to contain headers and data.");
-        return [];
+const RATES_CACHE_KEY = "proposalPackageRates.v1";
+
+function fetchWithTimeout(url, timeoutMs) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { cache: "no-store", signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
+function readRatesCache(url) {
+    try {
+        const raw = localStorage.getItem(RATES_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || parsed.url !== url) return null;
+        return parsed.data;
+    } catch (err) {
+        console.warn("Ignoring unreadable package-rate cache.", err);
+        return null;
+    }
+}
+
+function writeRatesCache(url, data) {
+    try {
+        localStorage.setItem(RATES_CACHE_KEY, JSON.stringify({
+            url: url,
+            savedAt: new Date().toISOString(),
+            data: data
+        }));
+    } catch (err) {
+        console.warn("Could not cache package rates.", err);
+    }
+}
+
+async function loadProposalRates() {
+    const rates = window.PackageRates;
+    if (!rates) {
+        throw new Error("Package rates helper failed to load.");
     }
 
-    const parseCsvLine = (line) => {
-        const values = [];
-        let inQuote = false;
-        let currentField = "";
-        for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-            if (char === '"') {
-                if (inQuote && i + 1 < line.length && line[i + 1] === '"') {
-                    currentField += '"';
-                    i++;
-                } else {
-                    inQuote = !inQuote;
-                }
-            } else if (char === ',' && !inQuote) {
-                values.push(currentField);
-                currentField = "";
+    let bundled = null;
+    try {
+        const response = await fetchWithTimeout("data.json", 12000);
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        bundled = await response.json();
+    } catch (err) {
+        console.warn("Failed to load bundled data.json.", err);
+    }
+
+    const configuredUrl = rates.configuredSheetUrl(window.PROPOSAL_RATES_SHEET_CSV_URL);
+    let fetched = null;
+    if (configuredUrl) {
+        try {
+            const response = await fetchWithTimeout(rates.withCacheBuster(configuredUrl), 12000);
+            if (!response.ok) throw new Error("HTTP " + response.status);
+            const parsed = rates.proposalDataFromCsv(await response.text());
+            if (parsed.ok) {
+                fetched = { ok: true, data: parsed.data };
             } else {
-                currentField += char;
+                console.warn("Google Sheet CSV was invalid.", parsed.errors);
+                fetched = { ok: false, reason: "invalid" };
             }
+        } catch (err) {
+            console.warn("Google Sheet CSV could not be loaded.", err);
+            fetched = { ok: false, reason: "network" };
         }
-        values.push(currentField);
-        // Do NOT trim inside quotes; trim outer whitespace
-        return values.map(v => v.trim());
-    };
-
-    const headerLine = lines[0];
-    const headers = parseCsvLine(headerLine);
-
-    const packages = [];
-
-    for (let i = 1; i < headers.length; i++) {
-        const pkg = {
-            id: headers[i].replace(/\s+/g, '-').toLowerCase(),
-            name: headers[i],
-            price: "",
-            features: "",
-            fullDescription: ""
-        };
-        let description = "";
-
-        for (let j = 1; j < lines.length; j++) {
-            const rowValues = parseCsvLine(lines[j]);
-            const featureName = rowValues[0] || "";
-            const featureValue = rowValues[i] || "";
-
-            if (featureName.toLowerCase() === 'total cost') {
-                const numeric = featureValue.replace(/[^0-9.]/g, '');
-                pkg.price = numeric ? `NRs ${Number(numeric).toLocaleString()}` : `NRs ${featureValue}`;
-            } else if (featureName) {
-                description += `${featureName}: ${featureValue}\n`;
-            }
-        }
-        pkg.fullDescription = description.trim();
-        pkg.features = description.split('\n').filter(f => f.trim() !== '').slice(0, 2).join(', ');
-        packages.push(pkg);
     }
-    return packages;
+
+    const resolved = rates.resolveRates({
+        configuredUrl: configuredUrl,
+        bundled: bundled,
+        fetched: fetched,
+        cached: configuredUrl ? readRatesCache(configuredUrl) : null
+    });
+
+    if (resolved.ok && resolved.source === "sheet") {
+        writeRatesCache(configuredUrl, resolved.data);
+    }
+    console.info("Package rates source:", resolved.source, resolved.reason || "");
+    return resolved;
+}
+
+function showRatesNotice(source, reason) {
+    const notice = document.getElementById("ratesSourceNotice");
+    if (!notice || !window.PackageRates) return;
+    notice.textContent = window.PackageRates.ratesSourceNotice(source, reason);
+    notice.hidden = false;
+}
+
+function showRatesLoadError() {
+    const preloader = document.getElementById("service-preloader");
+    if (preloader) preloader.classList.add("d-none");
+    const form = document.getElementById("serviceForm");
+    if (!form || form.querySelector(".alert-danger")) return;
+    const errDiv = document.createElement("div");
+    errDiv.className = "alert alert-danger";
+    errDiv.textContent = "Failed to load services data.";
+    form.appendChild(errDiv);
+    form.classList.remove("d-none");
+}
+
+function renderServiceForm() {
+    const serviceForm = document.getElementById("serviceForm");
+    window.proposalData.services.forEach(service => {
+        const serviceDiv = document.createElement("div");
+        serviceDiv.className = "form-check";
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.className = "form-check-input";
+        input.id = service.id;
+        input.name = "service";
+        input.value = service.name;
+
+        const label = document.createElement("label");
+        label.className = "form-check-label";
+        label.htmlFor = service.id;
+        label.textContent = service.name;
+
+        const small = document.createElement("small");
+        small.className = "form-text text-muted";
+        small.textContent = service.description;
+
+        serviceDiv.appendChild(input);
+        serviceDiv.appendChild(label);
+        serviceDiv.appendChild(document.createElement("br"));
+        serviceDiv.appendChild(small);
+
+        serviceForm.appendChild(serviceDiv);
+    });
+
+    const nextBtn = document.getElementById("nextStepButton");
+    if (nextBtn) nextBtn.disabled = true;
+    serviceForm.addEventListener("change", () => {
+        const anyChecked = serviceForm.querySelectorAll('input[name="service"]:checked').length > 0;
+        if (nextBtn) nextBtn.disabled = !anyChecked;
+    });
+
+    document.getElementById("service-preloader").classList.add("d-none");
+    serviceForm.classList.remove("d-none");
+    if (nextBtn) nextBtn.classList.remove("d-none");
 }
 
 function clearSelection() {

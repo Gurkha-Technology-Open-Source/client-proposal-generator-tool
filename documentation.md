@@ -68,10 +68,12 @@ The proposal footer includes a link to schedule a meeting. To change this:
 
 ## 5. Data Management
 
-The application uses `data.json` as the primary source for service and package definitions.
+On startup the app tries the published Google Sheet CSV URL in `config.js`. When that URL is empty, the sheet cannot be fetched, or the CSV does not match the documented columns, it uses `data.json` instead. A short line under the page title names the source in use. The last valid sheet is cached in `localStorage` and reused only when the live sheet cannot be reached.
+
+`data.json` remains the bundled catalog:
 
 - **Web Development**: Includes Starter, Standard, Premium, Static Website, and Custom Project.
 - **Digital Marketing**: Includes SEO (Basic/Advanced), Social Media (GT 1-4), Google Ads (Standard/Management Only), TikTok (Basic/Standard/Premium), and Custom Project.
 - **Other Services**: Web Hosting, Graphic Design, Mobile App Development.
 
-To add or modify packages, simply edit the `packages` array within the corresponding service object in `data.json`. The application will automatically load these changes.
+To change rates without editing the site, publish a sheet that uses the columns in the README and paste its CSV link into `config.js`. Editing `data.json` still updates the bundled fallback. Prices are stored as display strings and are not reformatted.
